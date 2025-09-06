@@ -1,0 +1,2138 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kullanıcı Paneli - Buradayım</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Kullanıcı paneli için ek stiller */
+        .user-panel-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .user-welcome {
+            font-size: 24px;
+            color: #2c3e50;
+        }
+        
+        .panel-nav {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .nav-btn {
+            padding: 10px 20px;
+            background-color: #ecf0f1;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .nav-btn.active {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .panel-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+        }
+        
+        .profile-section, .users-section, .settings-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            margin-right: 20px;
+        }
+        
+        .profile-info h2 {
+            margin-bottom: 5px;
+        }
+        
+        .profile-form {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input, .form-group select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .save-btn {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        .user-card {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        .user-details {
+            flex-grow: 1;
+        }
+        
+        .user-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .user-status {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        .online {
+            color: #2ecc71;
+        }
+        
+        .offline {
+            color: #e74c3c;
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .message-btn {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .location-btn {
+            background-color: #9b59b6;
+            color: white;
+        }
+        
+        .panel-section {
+            display: none;
+        }
+        
+        .panel-section.active {
+            display: block;
+        }
+        
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            color: #7f8c8d;
+        }
+        
+        /* Sağlık bölümü stilleri */
+        .health-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .health-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .health-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .health-icon {
+            font-size: 32px;
+            margin-right: 15px;
+        }
+        
+        .health-info {
+            flex-grow: 1;
+        }
+        
+        .health-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+        
+        .health-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .health-status {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        .health-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .health-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .health-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .health-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .health-chart {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .health-chart canvas {
+            width: 100%;
+            height: 200px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .health-alerts {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .health-alert {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .health-alert.warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border-left-color: #ffc107;
+        }
+        
+        .health-alert.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border-left-color: #17a2b8;
+        }
+        
+        /* Veri tablosu stilleri */
+        .data-table-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .table-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .search-box input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 250px;
+        }
+        
+        .search-box button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .table-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .action-btn:hover {
+            background-color: #27ae60;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+        }
+        
+        .data-table th {
+            background-color: #f8f9fa;
+            padding: 12px 8px;
+            text-align: left;
+            border-bottom: 2px solid #dee2e6;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .data-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #dee2e6;
+            font-size: 13px;
+        }
+        
+        .data-table tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .sortable {
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+        }
+        
+        .sortable:hover {
+            background-color: #e9ecef;
+        }
+        
+        .sort-indicator {
+            margin-left: 5px;
+            font-size: 12px;
+        }
+        
+        .sort-asc .sort-indicator::after {
+            content: "↑";
+        }
+        
+        .sort-desc .sort-indicator::after {
+            content: "↓";
+        }
+        
+        .table-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .table-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .pagination {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .page-btn {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .page-btn:hover:not(:disabled) {
+            background-color: #5a6268;
+        }
+        
+        .page-btn:disabled {
+            background-color: #adb5bd;
+            cursor: not-allowed;
+        }
+        
+        .status-online {
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .status-offline {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        
+        .coordinate-cell {
+            font-family: monospace;
+            font-size: 12px;
+        }
+        
+        .health-cell {
+            text-align: center;
+        }
+        
+        .health-normal {
+            color: #28a745;
+        }
+        
+        .health-warning {
+            color: #ffc107;
+        }
+        
+        .health-danger {
+            color: #dc3545;
+        }
+        
+        /* Akıllı saat bölümü stilleri */
+        .smartwatch-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .watch-connection-status {
+            margin-bottom: 20px;
+        }
+        
+        .watch-status-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .watch-icon {
+            font-size: 48px;
+            margin-right: 20px;
+        }
+        
+        .watch-info h3 {
+            margin: 0 0 10px 0;
+            font-size: 24px;
+        }
+        
+        .watch-info p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+        
+        .status-connected {
+            color: #2ecc71;
+        }
+        
+        .status-disconnected {
+            color: #e74c3c;
+        }
+        
+        .status-connecting {
+            color: #f39c12;
+        }
+        
+        .watch-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .watch-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .watch-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .watch-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .available-watches {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .watch-item {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .watch-item-info {
+            flex-grow: 1;
+        }
+        
+        .watch-item-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .watch-item-details {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .watch-settings {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .setting-group {
+            margin-bottom: 15px;
+        }
+        
+        .setting-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .setting-group input,
+        .setting-group select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .watch-data {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .data-item {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .data-label {
+            display: block;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .data-value {
+            display: block;
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .data-time {
+            display: block;
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .watch-sync-status {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .sync-info {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .sync-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: white;
+            border-radius: 6px;
+        }
+        
+        .sync-label {
+            font-weight: bold;
+        }
+        
+        .sync-value {
+            color: #666;
+        }
+        
+        .connection-strength-strong {
+            color: #2ecc71;
+        }
+        
+        .connection-strength-medium {
+            color: #f39c12;
+        }
+        
+        .connection-strength-weak {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="user-panel-container">
+        <div class="panel-header">
+            <h1 class="user-welcome">Kullanıcı Paneli</h1>
+            <div>
+                <button id="logout-btn" class="nav-btn">Çıkış Yap</button>
+            </div>
+        </div>
+        
+        <div class="stats-cards">
+            <div class="stat-card">
+                <div class="stat-number" id="total-users">0</div>
+                <div class="stat-label">Toplam Kullanıcı</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="online-users">0</div>
+                <div class="stat-label">Çevrimiçi Kullanıcı</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="location-shared">0</div>
+                <div class="stat-label">Konum Paylaşan</div>
+            </div>
+        </div>
+        
+        <div class="panel-nav">
+            <button class="nav-btn active" data-target="profile">Profilim</button>
+            <button class="nav-btn" data-target="health">Sağlık</button>
+            <button class="nav-btn" data-target="smartwatch">Akıllı Saat</button>
+            <button class="nav-btn" data-target="users">Kullanıcılar</button>
+            <button class="nav-btn" data-target="data-table">Veri Tablosu</button>
+            <button class="nav-btn" data-target="settings">Ayarlar</button>
+        </div>
+        
+        <div class="panel-content">
+            <div class="panel-section active" id="profile-section">
+                <div class="profile-section">
+                    <div class="profile-header">
+                        <div class="profile-avatar" id="user-avatar">K</div>
+                        <div class="profile-info">
+                            <h2 id="profile-name">Kullanıcı</h2>
+                            <p id="profile-status">Çevrimiçi</p>
+                        </div>
+                    </div>
+                    
+                    <form class="profile-form" id="profile-form">
+                        <div class="form-group">
+                            <label for="user-name">Kullanıcı Adı</label>
+                            <input type="text" id="user-name" placeholder="Kullanıcı adınız">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="user-email">E-posta</label>
+                            <input type="email" id="user-email" placeholder="E-posta adresiniz">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="user-status">Durum</label>
+                            <select id="user-status">
+                                <option value="online">Çevrimiçi</option>
+                                <option value="busy">Meşgul</option>
+                                <option value="away">Uzakta</option>
+                                <option value="offline">Çevrimdışı</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="user-location">Konum (şehir)</label>
+                            <input type="text" id="user-location" placeholder="Bulunduğunuz şehir">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="user-bio">Hakkımda</label>
+                            <input type="text" id="user-bio" placeholder="Kendinizden bahsedin">
+                        </div>
+                        
+                        <button type="submit" class="save-btn">Değişiklikleri Kaydet</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="panel-section" id="health-section">
+                <div class="health-section">
+                    <h2>Sağlık Durumu</h2>
+                    
+                    <div class="health-stats">
+                        <div class="health-card">
+                            <div class="health-icon">❤️</div>
+                            <div class="health-info">
+                                <div class="health-label">Kalp Atışı</div>
+                                <div class="health-value" id="heart-rate">-- BPM</div>
+                                <div class="health-status" id="heart-status">Ölçülüyor...</div>
+                            </div>
+                        </div>
+                        
+                        <div class="health-card">
+                            <div class="health-icon">🚶</div>
+                            <div class="health-info">
+                                <div class="health-label">Adım Sayısı</div>
+                                <div class="health-value" id="step-count">--</div>
+                                <div class="health-status" id="step-status">Ölçülüyor...</div>
+                            </div>
+                        </div>
+                        
+                        <div class="health-card">
+                            <div class="health-icon">🔥</div>
+                            <div class="health-info">
+                                <div class="health-label">Yakılan Kalori</div>
+                                <div class="health-value" id="calories">-- kcal</div>
+                                <div class="health-status" id="calorie-status">Ölçülüyor...</div>
+                            </div>
+                        </div>
+                        
+                        <div class="health-card">
+                            <div class="health-icon">😴</div>
+                            <div class="health-info">
+                                <div class="health-label">Uyku Kalitesi</div>
+                                <div class="health-value" id="sleep-quality">--</div>
+                                <div class="health-status" id="sleep-status">Ölçülüyor...</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="health-controls">
+                        <button id="start-health-monitoring" class="health-btn">Sağlık İzlemeyi Başlat</button>
+                        <button id="stop-health-monitoring" class="health-btn" style="display: none;">İzlemeyi Durdur</button>
+                        <button id="request-health-permission" class="health-btn">İzin İste</button>
+                    </div>
+                    
+                    <div class="health-chart">
+                        <h3>Kalp Atışı Grafiği</h3>
+                        <canvas id="heart-rate-chart" width="400" height="200"></canvas>
+                    </div>
+                    
+                    <div class="health-alerts">
+                        <h3>Sağlık Uyarıları</h3>
+                        <div id="health-alerts-list">
+                            <!-- Uyarılar buraya eklenecek -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel-section" id="smartwatch-section">
+                <div class="smartwatch-section">
+                    <h2>Akıllı Saat Yönetimi</h2>
+                    
+                    <div class="watch-connection-status">
+                        <div class="watch-status-card">
+                            <div class="watch-icon">⌚</div>
+                            <div class="watch-info">
+                                <h3 id="watch-name">Bağlı Saat Yok</h3>
+                                <p id="watch-status" class="status-disconnected">Bağlantı Yok</p>
+                                <p id="watch-battery">Pil: --%</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="watch-controls">
+                        <button id="scan-watches" class="watch-btn">🔍 Saatleri Tara</button>
+                        <button id="connect-watch" class="watch-btn" style="display: none;">📱 Bağlan</button>
+                        <button id="disconnect-watch" class="watch-btn" style="display: none;">❌ Bağlantıyı Kes</button>
+                        <button id="sync-watch" class="watch-btn" style="display: none;">🔄 Senkronize Et</button>
+                    </div>
+                    
+                    <div class="available-watches" id="available-watches" style="display: none;">
+                        <h3>Bulunan Saatler</h3>
+                        <div id="watches-list">
+                            <!-- Bulunan saatler buraya eklenecek -->
+                        </div>
+                    </div>
+                    
+                    <div class="watch-settings">
+                        <h3>Saat Ayarları</h3>
+                        
+                        <div class="setting-group">
+                            <label for="heart-rate-interval">Kalp Atışı Ölçüm Aralığı</label>
+                            <select id="heart-rate-interval">
+                                <option value="1">1 dakika</option>
+                                <option value="5" selected>5 dakika</option>
+                                <option value="10">10 dakika</option>
+                                <option value="30">30 dakika</option>
+                            </select>
+                        </div>
+                        
+                        <div class="setting-group">
+                            <label for="step-goal">Günlük Adım Hedefi</label>
+                            <input type="number" id="step-goal" value="10000" min="1000" max="50000" step="1000">
+                        </div>
+                        
+                        <div class="setting-group">
+                            <label for="sleep-tracking">Uyku Takibi</label>
+                            <select id="sleep-tracking">
+                                <option value="enabled" selected>Açık</option>
+                                <option value="disabled">Kapalı</option>
+                            </select>
+                        </div>
+                        
+                        <div class="setting-group">
+                            <label for="notifications">Bildirimler</label>
+                            <select id="notifications">
+                                <option value="all" selected>Tümü</option>
+                                <option value="important">Sadece Önemliler</option>
+                                <option value="none">Kapalı</option>
+                            </select>
+                        </div>
+                        
+                        <button id="save-watch-settings" class="watch-btn">💾 Ayarları Kaydet</button>
+                    </div>
+                    
+                    <div class="watch-data">
+                        <h3>Son Veriler</h3>
+                        <div class="data-grid">
+                            <div class="data-item">
+                                <span class="data-label">Son Kalp Atışı</span>
+                                <span class="data-value" id="last-heart-rate">-- BPM</span>
+                                <span class="data-time" id="last-heart-rate-time">--</span>
+                            </div>
+                            <div class="data-item">
+                                <span class="data-label">Bugünkü Adımlar</span>
+                                <span class="data-value" id="today-steps">--</span>
+                                <span class="data-time" id="today-steps-time">--</span>
+                            </div>
+                            <div class="data-item">
+                                <span class="data-label">Yakılan Kalori</span>
+                                <span class="data-value" id="today-calories">-- kcal</span>
+                                <span class="data-time" id="today-calories-time">--</span>
+                            </div>
+                            <div class="data-item">
+                                <span class="data-label">Uyku Süresi</span>
+                                <span class="data-value" id="last-sleep">-- saat</span>
+                                <span class="data-time" id="last-sleep-time">--</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="watch-sync-status">
+                        <h3>Senkronizasyon Durumu</h3>
+                        <div class="sync-info">
+                            <div class="sync-item">
+                                <span class="sync-label">Son Senkronizasyon:</span>
+                                <span class="sync-value" id="last-sync">Hiç senkronize edilmedi</span>
+                            </div>
+                            <div class="sync-item">
+                                <span class="sync-label">Senkronizasyon Sıklığı:</span>
+                                <span class="sync-value" id="sync-frequency">5 dakika</span>
+                            </div>
+                            <div class="sync-item">
+                                <span class="sync-label">Bağlantı Gücü:</span>
+                                <span class="sync-value" id="connection-strength">--</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel-section" id="users-section">
+                <div class="users-section">
+                    <h2>Tüm Kullanıcılar</h2>
+                    <div id="all-users-list">
+                        <!-- Kullanıcılar buraya dinamik olarak eklenecek -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel-section" id="data-table-section">
+                <div class="data-table-section">
+                    <h2>Kullanıcı Veri Tablosu</h2>
+                    
+                    <div class="table-controls">
+                        <div class="search-box">
+                            <input type="text" id="table-search" placeholder="Kullanıcı ara..." />
+                            <button id="search-btn">🔍</button>
+                        </div>
+                        <div class="table-actions">
+                            <button id="export-excel" class="action-btn">📊 Excel'e Aktar</button>
+                            <button id="refresh-table" class="action-btn">🔄 Yenile</button>
+                            <button id="clear-filters" class="action-btn">🗑️ Filtreleri Temizle</button>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table id="users-data-table" class="data-table">
+                            <thead>
+                                <tr>
+                                    <th class="sortable" data-column="name">
+                                        Kullanıcı Adı <span class="sort-indicator">↕️</span>
+                                    </th>
+                                    <th class="sortable" data-column="email">
+                                        E-posta <span class="sort-indicator">↕️</span>
+                                    </th>
+                                    <th class="sortable" data-column="status">
+                                        Durum <span class="sort-indicator">↕️</span>
+                                    </th>
+                                    <th class="sortable" data-column="latitude">
+                                        Enlem <span class="sort-indicator">↕️</span>
+                                    </th>
+                                    <th class="sortable" data-column="longitude">
+                                        Boylam <span class="sort-indicator">↕️</span>
+                                    </th>
+                                    <th class="sortable" data-column="altitude">
+                                        Yükseklik <span class="sort-indicator">↕️</span>
+                                    </th>
+                                    <th class="sortable" data-column="accuracy">
+                                        Hassasiyet <span class="sort-indicator">↕️</span>
+                                    </th>
+                                    <th class="sortable" data-column="heartRate">
+                                        Kalp Atışı <span class="sort-indicator">↕️</span>
+                                    </th>
+                                    <th class="sortable" data-column="stepCount">
+                                        Adım Sayısı <span class="sort-indicator">↕️</span>
+                                    </th>
+                                    <th class="sortable" data-column="calories">
+                                        Kalori <span class="sort-indicator">↕️</span>
+                                    </th>
+                                    <th class="sortable" data-column="sleepQuality">
+                                        Uyku Kalitesi <span class="sort-indicator">↕️</span>
+                                    </th>
+                                    <th class="sortable" data-column="lastSeen">
+                                        Son Görülme <span class="sort-indicator">↕️</span>
+                                    </th>
+                                    <th>İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                                <!-- Veriler buraya dinamik olarak eklenecek -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="table-info">
+                        <div class="table-stats">
+                            <span id="total-records">Toplam: 0 kayıt</span>
+                            <span id="filtered-records">Filtrelenmiş: 0 kayıt</span>
+                        </div>
+                        <div class="pagination">
+                            <button id="prev-page" class="page-btn">◀</button>
+                            <span id="page-info">Sayfa 1 / 1</span>
+                            <button id="next-page" class="page-btn">▶</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel-section" id="settings-section">
+                <div class="settings-section">
+                    <h2>Hesap Ayarları</h2>
+                    
+                    <div class="form-group">
+                        <label for="notification">Bildirimler</label>
+                        <select id="notification">
+                            <option value="enabled">Açık</option>
+                            <option value="disabled">Kapalı</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="privacy">Gizlilik Ayarları</label>
+                        <select id="privacy">
+                            <option value="public">Herkes konumumu görebilir</option>
+                            <option value="friends">Sadece arkadaşlarım görebilir</option>
+                            <option value="private">Kimse göremez</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="map-style">Harita Stili</label>
+                        <select id="map-style">
+                            <option value="standard">Standart</option>
+                            <option value="satellite">Uydu Görünümü</option>
+                            <option value="dark">Karanlık Mod</option>
+                        </select>
+                    </div>
+                    
+                    <button class="save-btn">Ayarları Kaydet</button>
+                    
+                    <h3 style="margin-top: 30px;">Tehlikeli Bölge</h3>
+                    <button id="delete-account" style="background-color: #e74c3c; color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer;">Hesabı Sil</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const socket = io();
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const panelSections = document.querySelectorAll('.panel-section');
+            const profileForm = document.getElementById('profile-form');
+            const logoutBtn = document.getElementById('logout-btn');
+            const deleteAccountBtn = document.getElementById('delete-account');
+            
+            // Sağlık sensörleri için değişkenler
+            const startHealthBtn = document.getElementById('start-health-monitoring');
+            const stopHealthBtn = document.getElementById('stop-health-monitoring');
+            const requestPermissionBtn = document.getElementById('request-health-permission');
+            const heartRateElement = document.getElementById('heart-rate');
+            const stepCountElement = document.getElementById('step-count');
+            const caloriesElement = document.getElementById('calories');
+            const sleepQualityElement = document.getElementById('sleep-quality');
+            const healthAlertsList = document.getElementById('health-alerts-list');
+            
+            let healthMonitoring = false;
+            let heartRateData = [];
+            let stepCount = 0;
+            let caloriesBurned = 0;
+            let sleepQuality = 0;
+            
+            // Veri tablosu için değişkenler
+            let allUsersData = [];
+            let filteredUsersData = [];
+            let currentSortColumn = null;
+            let currentSortDirection = 'asc';
+            let currentPage = 1;
+            const itemsPerPage = 10;
+            
+            // Akıllı saat için değişkenler
+            let connectedWatch = null;
+            let availableWatches = [];
+            let watchSettings = {
+                heartRateInterval: 5,
+                stepGoal: 10000,
+                sleepTracking: 'enabled',
+                notifications: 'all'
+            };
+            let lastSyncTime = null;
+            let syncInterval = null;
+            
+            // Kullanıcı bilgilerini yükle (gerçek uygulamada sunucudan alınır)
+            let userData = JSON.parse(localStorage.getItem('userData')) || {
+                id: 'user_' + Math.random().toString(36).substr(2, 9),
+                name: 'Kullanıcı',
+                email: '',
+                status: 'online',
+                location: '',
+                bio: ''
+            };
+            
+            // Sayfa yüklendiğinde kullanıcı verilerini doldur
+            document.getElementById('user-name').value = userData.name;
+            document.getElementById('user-email').value = userData.email;
+            document.getElementById('user-status').value = userData.status;
+            document.getElementById('user-location').value = userData.location;
+            document.getElementById('user-bio').value = userData.bio;
+            document.getElementById('profile-name').textContent = userData.name;
+            document.getElementById('user-avatar').textContent = userData.name.charAt(0).toUpperCase();
+            
+            // Navigasyon butonları için olay dinleyicileri
+            navButtons.forEach(button => {
+                if (button.id !== 'logout-btn') {
+                    button.addEventListener('click', function() {
+                        const target = this.getAttribute('data-target');
+                        
+                        // Tüm butonlardan active sınıfını kaldır
+                        navButtons.forEach(btn => {
+                            if (btn.id !== 'logout-btn') {
+                                btn.classList.remove('active');
+                            }
+                        });
+                        
+                        // Tüm bölümleri gizle
+                        panelSections.forEach(section => {
+                            section.classList.remove('active');
+                        });
+                        
+                        // Tıklanan butona active sınıfı ekle
+                        this.classList.add('active');
+                        
+                        // İlgili bölümü göster
+                        document.getElementById(`${target}-section`).classList.add('active');
+                    });
+                }
+            });
+            
+            // Profil formu gönderildiğinde
+            profileForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Form verilerini al
+                userData.name = document.getElementById('user-name').value;
+                userData.email = document.getElementById('user-email').value;
+                userData.status = document.getElementById('user-status').value;
+                userData.location = document.getElementById('user-location').value;
+                userData.bio = document.getElementById('user-bio').value;
+                
+                // LocalStorage'a kaydet
+                localStorage.setItem('userData', JSON.stringify(userData));
+                
+                // Görsel öğeleri güncelle
+                document.getElementById('profile-name').textContent = userData.name;
+                document.getElementById('user-avatar').textContent = userData.name.charAt(0).toUpperCase();
+                
+                // Sunucuya kullanıcı güncelleme isteği gönder
+                socket.emit('update-user', userData);
+                
+                alert('Profil bilgileriniz güncellendi!');
+            });
+            
+            // Çıkış butonu
+            logoutBtn.addEventListener('click', function() {
+                if (confirm('Çıkış yapmak istediğinize emin misiniz?')) {
+                    // Sunucuya çıkış bildirimi gönder
+                    socket.emit('user-logout', userData.id);
+                    
+                    // LocalStorage'ı temizle
+                    localStorage.removeItem('userData');
+                    
+                    // Ana sayfaya yönlendir
+                    window.location.href = 'index.html';
+                }
+            });
+            
+            // Hesap silme butonu
+            deleteAccountBtn.addEventListener('click', function() {
+                if (confirm('Hesabınızı silmek istediğinize emin misiniz? Bu işlem geri alınamaz!')) {
+                    // Sunucuya hesap silme isteği gönder
+                    socket.emit('delete-account', userData.id);
+                    
+                    // LocalStorage'ı temizle
+                    localStorage.removeItem('userData');
+                    
+                    // Ana sayfaya yönlendir
+                    window.location.href = 'index.html';
+                }
+            });
+            
+            // Sunucudan kullanıcı listesi alındığında
+            socket.on('users-update', function(users) {
+                updateUserStats(users);
+                renderAllUsersList(users);
+            });
+            
+            // Kullanıcı istatistiklerini güncelle
+            function updateUserStats(users) {
+                const totalUsers = Object.keys(users).length;
+                let onlineUsers = 0;
+                let locationShared = 0;
+                
+                Object.values(users).forEach(user => {
+                    if (user.status === 'online') onlineUsers++;
+                    if (user.location) locationShared++;
+                });
+                
+                document.getElementById('total-users').textContent = totalUsers;
+                document.getElementById('online-users').textContent = onlineUsers;
+                document.getElementById('location-shared').textContent = locationShared;
+            }
+            
+            // Tüm kullanıcılar listesini oluştur
+            function renderAllUsersList(users) {
+                const usersList = document.getElementById('all-users-list');
+                usersList.innerHTML = '';
+                
+                Object.entries(users).forEach(([id, user]) => {
+                    if (id !== userData.id) {
+                        const userCard = document.createElement('div');
+                        userCard.className = 'user-card';
+                        
+                        const locationInfo = user.location ? `
+                            <div style="font-size: 12px; color: #666; margin-top: 5px;">
+                                ${user.location.altitude ? `Yükseklik: ${user.location.altitude.toFixed(1)}m` : ''}
+                                ${user.location.accuracy ? ` | Hassasiyet: ±${user.location.accuracy.toFixed(1)}m` : ''}
+                            </div>
+                        ` : '';
+                        
+                        userCard.innerHTML = `
+                            <div class="user-avatar">${user.name ? user.name.charAt(0).toUpperCase() : 'K'}</div>
+                            <div class="user-details">
+                                <div class="user-name">${user.name || 'Kullanıcı'}</div>
+                                <div class="user-status ${user.status === 'online' ? 'online' : 'offline'}">
+                                    ${user.status === 'online' ? 'Çevrimiçi' : 'Çevrimdışı'}
+                                </div>
+                                ${locationInfo}
+                            </div>
+                            <div class="user-actions">
+                                <button class="action-btn message-btn">Mesaj</button>
+                                <button class="action-btn location-btn" onclick="showLocationDetails('${id}', ${JSON.stringify(user.location).replace(/"/g, '&quot;')})">Detay</button>
+                            </div>
+                        `;
+                        
+                        usersList.appendChild(userCard);
+                    }
+                });
+            }
+            
+            // Sağlık izleme fonksiyonları
+            startHealthBtn.addEventListener('click', startHealthMonitoring);
+            stopHealthBtn.addEventListener('click', stopHealthMonitoring);
+            requestPermissionBtn.addEventListener('click', requestHealthPermissions);
+            
+            // Sağlık izlemeyi başlat
+            function startHealthMonitoring() {
+                if (!healthMonitoring) {
+                    healthMonitoring = true;
+                    startHealthBtn.style.display = 'none';
+                    stopHealthBtn.style.display = 'inline-block';
+                    
+                    // Simüle edilmiş sağlık verileri (gerçek uygulamada sensörlerden alınır)
+                    simulateHealthData();
+                    
+                    addHealthAlert('Sağlık izleme başlatıldı', 'info');
+                }
+            }
+            
+            // Sağlık izlemeyi durdur
+            function stopHealthMonitoring() {
+                healthMonitoring = false;
+                startHealthBtn.style.display = 'inline-block';
+                stopHealthBtn.style.display = 'none';
+                
+                addHealthAlert('Sağlık izleme durduruldu', 'info');
+            }
+            
+            // Sağlık izinleri iste
+            function requestHealthPermissions() {
+                if ('permissions' in navigator) {
+                    navigator.permissions.query({name: 'accelerometer'}).then(result => {
+                        if (result.state === 'granted') {
+                            addHealthAlert('Hareket sensörü izni verildi', 'info');
+                        } else {
+                            addHealthAlert('Hareket sensörü izni gerekli', 'warning');
+                        }
+                    });
+                    
+                    navigator.permissions.query({name: 'gyroscope'}).then(result => {
+                        if (result.state === 'granted') {
+                            addHealthAlert('Jiroskop izni verildi', 'info');
+                        } else {
+                            addHealthAlert('Jiroskop izni gerekli', 'warning');
+                        }
+                    });
+                } else {
+                    addHealthAlert('Bu tarayıcı sensör izinlerini desteklemiyor', 'warning');
+                }
+            }
+            
+            // Simüle edilmiş sağlık verileri
+            function simulateHealthData() {
+                if (!healthMonitoring) return;
+                
+                // Kalp atışı simülasyonu (60-100 BPM arası)
+                const heartRate = Math.floor(Math.random() * 40) + 60;
+                heartRateData.push({
+                    time: new Date(),
+                    value: heartRate
+                });
+                
+                // Son 20 veriyi tut
+                if (heartRateData.length > 20) {
+                    heartRateData.shift();
+                }
+                
+                updateHealthDisplay(heartRate);
+                updateHeartRateChart();
+                
+                // Adım sayısı simülasyonu
+                stepCount += Math.floor(Math.random() * 5) + 1;
+                stepCountElement.textContent = stepCount.toLocaleString();
+                document.getElementById('step-status').textContent = 'Aktif';
+                
+                // Kalori simülasyonu
+                caloriesBurned += Math.floor(Math.random() * 3) + 1;
+                caloriesElement.textContent = caloriesBurned + ' kcal';
+                document.getElementById('calorie-status').textContent = 'Aktif';
+                
+                // Uyku kalitesi simülasyonu
+                sleepQuality = Math.floor(Math.random() * 40) + 60;
+                sleepQualityElement.textContent = sleepQuality + '%';
+                document.getElementById('sleep-status').textContent = 'İyi';
+                
+                // Sağlık uyarıları
+                checkHealthAlerts(heartRate);
+                
+                // Sunucuya sağlık verilerini gönder
+                socket.emit('health-data', {
+                    userId: userData.id,
+                    heartRate: heartRate,
+                    stepCount: stepCount,
+                    calories: caloriesBurned,
+                    sleepQuality: sleepQuality,
+                    timestamp: new Date()
+                });
+                
+                // 2 saniye sonra tekrar çalıştır
+                setTimeout(simulateHealthData, 2000);
+            }
+            
+            // Sağlık verilerini güncelle
+            function updateHealthDisplay(heartRate) {
+                heartRateElement.textContent = heartRate + ' BPM';
+                
+                let status = '';
+                let statusClass = '';
+                
+                if (heartRate < 60) {
+                    status = 'Düşük';
+                    statusClass = 'warning';
+                } else if (heartRate > 100) {
+                    status = 'Yüksek';
+                    statusClass = 'warning';
+                } else {
+                    status = 'Normal';
+                    statusClass = 'info';
+                }
+                
+                document.getElementById('heart-status').textContent = status;
+                document.getElementById('heart-status').className = 'health-status ' + statusClass;
+            }
+            
+            // Kalp atışı grafiğini güncelle
+            function updateHeartRateChart() {
+                const canvas = document.getElementById('heart-rate-chart');
+                const ctx = canvas.getContext('2d');
+                
+                // Canvas'ı temizle
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                if (heartRateData.length < 2) return;
+                
+                // Grafik çiz
+                ctx.strokeStyle = '#e74c3c';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                
+                const maxValue = Math.max(...heartRateData.map(d => d.value));
+                const minValue = Math.min(...heartRateData.map(d => d.value));
+                const range = maxValue - minValue || 1;
+                
+                heartRateData.forEach((point, index) => {
+                    const x = (index / (heartRateData.length - 1)) * canvas.width;
+                    const y = canvas.height - ((point.value - minValue) / range) * canvas.height;
+                    
+                    if (index === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                });
+                
+                ctx.stroke();
+                
+                // Grid çizgileri
+                ctx.strokeStyle = '#ddd';
+                ctx.lineWidth = 1;
+                for (let i = 0; i <= 4; i++) {
+                    const y = (i / 4) * canvas.height;
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(canvas.width, y);
+                    ctx.stroke();
+                }
+            }
+            
+            // Sağlık uyarıları kontrol et
+            function checkHealthAlerts(heartRate) {
+                if (heartRate < 50) {
+                    addHealthAlert('Kalp atışı çok düşük! Doktora başvurun.', 'error');
+                } else if (heartRate > 120) {
+                    addHealthAlert('Kalp atışı yüksek! Dinlenin.', 'warning');
+                }
+                
+                if (stepCount > 10000) {
+                    addHealthAlert('Günlük hedefinizi aştınız! 🎉', 'info');
+                }
+            }
+            
+            // Sağlık uyarısı ekle
+            function addHealthAlert(message, type = 'info') {
+                const alertDiv = document.createElement('div');
+                alertDiv.className = `health-alert ${type}`;
+                alertDiv.innerHTML = `
+                    <strong>${new Date().toLocaleTimeString('tr-TR')}</strong><br>
+                    ${message}
+                `;
+                
+                healthAlertsList.insertBefore(alertDiv, healthAlertsList.firstChild);
+                
+                // En fazla 5 uyarı göster
+                while (healthAlertsList.children.length > 5) {
+                    healthAlertsList.removeChild(healthAlertsList.lastChild);
+                }
+            }
+            
+            // Veri tablosu olay dinleyicileri
+            document.getElementById('table-search').addEventListener('input', filterTable);
+            document.getElementById('search-btn').addEventListener('click', filterTable);
+            document.getElementById('export-excel').addEventListener('click', exportToExcel);
+            document.getElementById('refresh-table').addEventListener('click', refreshTable);
+            document.getElementById('clear-filters').addEventListener('click', clearFilters);
+            document.getElementById('prev-page').addEventListener('click', () => changePage(-1));
+            document.getElementById('next-page').addEventListener('click', () => changePage(1));
+            
+            // Sıralama olay dinleyicileri
+            document.querySelectorAll('.sortable').forEach(header => {
+                header.addEventListener('click', () => sortTable(header.dataset.column));
+            });
+            
+            // Veri tablosunu güncelle
+            function updateDataTable() {
+                const tbody = document.getElementById('table-body');
+                tbody.innerHTML = '';
+                
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+                const pageData = filteredUsersData.slice(startIndex, endIndex);
+                
+                pageData.forEach(user => {
+                    const row = createTableRow(user);
+                    tbody.appendChild(row);
+                });
+                
+                updateTableInfo();
+            }
+            
+            // Tablo satırı oluştur
+            function createTableRow(user) {
+                const row = document.createElement('tr');
+                
+                const location = user.location || {};
+                const healthData = user.healthData || {};
+                
+                row.innerHTML = `
+                    <td>${user.name || 'Kullanıcı'}</td>
+                    <td>${user.email || '-'}</td>
+                    <td><span class="status-${user.status === 'online' ? 'online' : 'offline'}">${user.status === 'online' ? 'Çevrimiçi' : 'Çevrimdışı'}</span></td>
+                    <td class="coordinate-cell">${location.lat ? location.lat.toFixed(8) : '-'}</td>
+                    <td class="coordinate-cell">${location.lng ? location.lng.toFixed(8) : '-'}</td>
+                    <td class="coordinate-cell">${location.altitude ? location.altitude.toFixed(2) + 'm' : '-'}</td>
+                    <td class="coordinate-cell">${location.accuracy ? '±' + location.accuracy.toFixed(1) + 'm' : '-'}</td>
+                    <td class="health-cell">
+                        <span class="health-${getHealthStatus(healthData.heartRate, 60, 100)}">
+                            ${healthData.heartRate ? healthData.heartRate + ' BPM' : '-'}
+                        </span>
+                    </td>
+                    <td class="health-cell">${healthData.stepCount ? healthData.stepCount.toLocaleString() : '-'}</td>
+                    <td class="health-cell">${healthData.calories ? healthData.calories + ' kcal' : '-'}</td>
+                    <td class="health-cell">
+                        <span class="health-${getHealthStatus(healthData.sleepQuality, 70, 100)}">
+                            ${healthData.sleepQuality ? healthData.sleepQuality + '%' : '-'}
+                        </span>
+                    </td>
+                    <td>${user.lastSeen ? new Date(user.lastSeen).toLocaleString('tr-TR') : '-'}</td>
+                    <td>
+                        <button onclick="viewUserDetails('${user.id}')" class="action-btn" style="padding: 4px 8px; font-size: 12px;">👁️</button>
+                        <button onclick="editUser('${user.id}')" class="action-btn" style="padding: 4px 8px; font-size: 12px; background-color: #f39c12;">✏️</button>
+                    </td>
+                `;
+                
+                return row;
+            }
+            
+            // Sağlık durumu belirle
+            function getHealthStatus(value, min, max) {
+                if (!value) return 'normal';
+                if (value < min || value > max) return 'danger';
+                if (value < min * 1.1 || value > max * 0.9) return 'warning';
+                return 'normal';
+            }
+            
+            // Tablo bilgilerini güncelle
+            function updateTableInfo() {
+                const totalPages = Math.ceil(filteredUsersData.length / itemsPerPage);
+                
+                document.getElementById('total-records').textContent = `Toplam: ${allUsersData.length} kayıt`;
+                document.getElementById('filtered-records').textContent = `Filtrelenmiş: ${filteredUsersData.length} kayıt`;
+                document.getElementById('page-info').textContent = `Sayfa ${currentPage} / ${totalPages || 1}`;
+                
+                document.getElementById('prev-page').disabled = currentPage <= 1;
+                document.getElementById('next-page').disabled = currentPage >= totalPages;
+            }
+            
+            // Tabloyu sırala
+            function sortTable(column) {
+                if (currentSortColumn === column) {
+                    currentSortDirection = currentSortDirection === 'asc' ? 'desc' : 'asc';
+                } else {
+                    currentSortColumn = column;
+                    currentSortDirection = 'asc';
+                }
+                
+                // Sıralama göstergelerini güncelle
+                document.querySelectorAll('.sortable').forEach(header => {
+                    header.classList.remove('sort-asc', 'sort-desc');
+                });
+                
+                const currentHeader = document.querySelector(`[data-column="${column}"]`);
+                currentHeader.classList.add(`sort-${currentSortDirection}`);
+                
+                // Veriyi sırala
+                filteredUsersData.sort((a, b) => {
+                    let aValue = getNestedValue(a, column);
+                    let bValue = getNestedValue(b, column);
+                    
+                    // Sayısal değerleri dönüştür
+                    if (!isNaN(aValue) && !isNaN(bValue)) {
+                        aValue = parseFloat(aValue);
+                        bValue = parseFloat(bValue);
+                    }
+                    
+                    if (currentSortDirection === 'asc') {
+                        return aValue > bValue ? 1 : -1;
+                    } else {
+                        return aValue < bValue ? 1 : -1;
+                    }
+                });
+                
+                currentPage = 1;
+                updateDataTable();
+            }
+            
+            // İç içe değer al
+            function getNestedValue(obj, path) {
+                const keys = path.split('.');
+                let value = obj;
+                for (const key of keys) {
+                    if (value && typeof value === 'object') {
+                        value = value[key];
+                    } else {
+                        return '';
+                    }
+                }
+                return value || '';
+            }
+            
+            // Tabloyu filtrele
+            function filterTable() {
+                const searchTerm = document.getElementById('table-search').value.toLowerCase();
+                
+                filteredUsersData = allUsersData.filter(user => {
+                    return (
+                        (user.name && user.name.toLowerCase().includes(searchTerm)) ||
+                        (user.email && user.email.toLowerCase().includes(searchTerm)) ||
+                        (user.status && user.status.toLowerCase().includes(searchTerm))
+                    );
+                });
+                
+                currentPage = 1;
+                updateDataTable();
+            }
+            
+            // Sayfa değiştir
+            function changePage(direction) {
+                const totalPages = Math.ceil(filteredUsersData.length / itemsPerPage);
+                const newPage = currentPage + direction;
+                
+                if (newPage >= 1 && newPage <= totalPages) {
+                    currentPage = newPage;
+                    updateDataTable();
+                }
+            }
+            
+            // Excel'e aktar
+            function exportToExcel() {
+                const csvContent = generateCSV();
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+                
+                link.setAttribute('href', url);
+                link.setAttribute('download', `kullanici_verileri_${new Date().toISOString().split('T')[0]}.csv`);
+                link.style.visibility = 'hidden';
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+            
+            // CSV oluştur
+            function generateCSV() {
+                const headers = [
+                    'Kullanıcı Adı', 'E-posta', 'Durum', 'Enlem', 'Boylam', 'Yükseklik', 
+                    'Hassasiyet', 'Kalp Atışı', 'Adım Sayısı', 'Kalori', 'Uyku Kalitesi', 'Son Görülme'
+                ];
+                
+                const rows = filteredUsersData.map(user => {
+                    const location = user.location || {};
+                    const healthData = user.healthData || {};
+                    
+                    return [
+                        user.name || '',
+                        user.email || '',
+                        user.status || '',
+                        location.lat ? location.lat.toFixed(8) : '',
+                        location.lng ? location.lng.toFixed(8) : '',
+                        location.altitude ? location.altitude.toFixed(2) : '',
+                        location.accuracy ? location.accuracy.toFixed(1) : '',
+                        healthData.heartRate || '',
+                        healthData.stepCount || '',
+                        healthData.calories || '',
+                        healthData.sleepQuality || '',
+                        user.lastSeen ? new Date(user.lastSeen).toLocaleString('tr-TR') : ''
+                    ];
+                });
+                
+                const csvContent = [headers, ...rows]
+                    .map(row => row.map(cell => `"${cell}"`).join(','))
+                    .join('\n');
+                
+                return '\uFEFF' + csvContent; // BOM ekle
+            }
+            
+            // Tabloyu yenile
+            function refreshTable() {
+                allUsersData = [];
+                filteredUsersData = [];
+                updateDataTable();
+                addHealthAlert('Tablo yenilendi', 'info');
+            }
+            
+            // Filtreleri temizle
+            function clearFilters() {
+                document.getElementById('table-search').value = '';
+                filteredUsersData = [...allUsersData];
+                currentPage = 1;
+                updateDataTable();
+            }
+            
+            // Kullanıcı detaylarını görüntüle
+            function viewUserDetails(userId) {
+                const user = allUsersData.find(u => u.id === userId);
+                if (user) {
+                    showLocationDetails(userId, user.location);
+                }
+            }
+            
+            // Kullanıcı düzenle
+            function editUser(userId) {
+                alert(`Kullanıcı düzenleme özelliği: ${userId}`);
+            }
+            
+            // Sunucudan kullanıcı verilerini al
+            socket.on('users-update', function(users) {
+                updateUserStats(users);
+                renderAllUsersList(users);
+                
+                // Veri tablosunu güncelle
+                allUsersData = Object.entries(users).map(([id, user]) => ({
+                    id: id,
+                    name: user.name,
+                    email: user.email,
+                    status: user.status,
+                    location: user.location,
+                    healthData: user.healthData,
+                    lastSeen: user.lastSeen
+                }));
+                
+                filteredUsersData = [...allUsersData];
+                updateDataTable();
+            });
+            
+            // Sağlık verilerini güncelle
+            socket.on('health-update', function(data) {
+                // Kullanıcının sağlık verilerini güncelle
+                const userIndex = allUsersData.findIndex(u => u.id === data.userId);
+                if (userIndex !== -1) {
+                    allUsersData[userIndex].healthData = data.healthData;
+                    filteredUsersData = [...allUsersData];
+                    updateDataTable();
+                }
+            });
+            
+            // Akıllı saat olay dinleyicileri
+            document.getElementById('scan-watches').addEventListener('click', scanForWatches);
+            document.getElementById('connect-watch').addEventListener('click', connectToWatch);
+            document.getElementById('disconnect-watch').addEventListener('click', disconnectWatch);
+            document.getElementById('sync-watch').addEventListener('click', syncWatch);
+            document.getElementById('save-watch-settings').addEventListener('click', saveWatchSettings);
+            
+            // Akıllı saat fonksiyonları
+            function scanForWatches() {
+                addHealthAlert('Akıllı saatler taranıyor...', 'info');
+                
+                // Simüle edilmiş saat tarama
+                setTimeout(() => {
+                    availableWatches = [
+                        {
+                            id: 'watch_001',
+                            name: 'Apple Watch Series 9',
+                            battery: 85,
+                            signal: 'strong',
+                            distance: '2m'
+                        },
+                        {
+                            id: 'watch_002',
+                            name: 'Samsung Galaxy Watch 6',
+                            battery: 72,
+                            signal: 'medium',
+                            distance: '5m'
+                        },
+                        {
+                            id: 'watch_003',
+                            name: 'Fitbit Versa 4',
+                            battery: 45,
+                            signal: 'weak',
+                            distance: '8m'
+                        }
+                    ];
+                    
+                    displayAvailableWatches();
+                    addHealthAlert(`${availableWatches.length} akıllı saat bulundu`, 'info');
+                }, 2000);
+            }
+            
+            function displayAvailableWatches() {
+                const watchesList = document.getElementById('watches-list');
+                const availableWatchesDiv = document.getElementById('available-watches');
+                
+                watchesList.innerHTML = '';
+                
+                availableWatches.forEach(watch => {
+                    const watchItem = document.createElement('div');
+                    watchItem.className = 'watch-item';
+                    
+                    const signalClass = `connection-strength-${watch.signal}`;
+                    
+                    watchItem.innerHTML = `
+                        <div class="watch-item-info">
+                            <div class="watch-item-name">${watch.name}</div>
+                            <div class="watch-item-details">
+                                Pil: ${watch.battery}% | Sinyal: <span class="${signalClass}">${watch.signal}</span> | Mesafe: ${watch.distance}
+                            </div>
+                        </div>
+                        <button onclick="selectWatch('${watch.id}')" class="watch-btn" style="padding: 8px 15px;">Bağlan</button>
+                    `;
+                    
+                    watchesList.appendChild(watchItem);
+                });
+                
+                availableWatchesDiv.style.display = 'block';
+            }
+            
+            function selectWatch(watchId) {
+                const watch = availableWatches.find(w => w.id === watchId);
+                if (watch) {
+                    connectToWatch(watch);
+                }
+            }
+            
+            function connectToWatch(watch = null) {
+                if (!watch) {
+                    watch = availableWatches[0]; // İlk saati seç
+                }
+                
+                addHealthAlert(`${watch.name} bağlanıyor...`, 'info');
+                
+                // Bağlantı simülasyonu
+                setTimeout(() => {
+                    connectedWatch = watch;
+                    updateWatchStatus();
+                    startWatchSync();
+                    addHealthAlert(`${watch.name} başarıyla bağlandı!`, 'info');
+                }, 3000);
+            }
+            
+            function disconnectWatch() {
+                if (connectedWatch) {
+                    addHealthAlert(`${connectedWatch.name} bağlantısı kesiliyor...`, 'info');
+                    
+                    connectedWatch = null;
+                    stopWatchSync();
+                    updateWatchStatus();
+                    
+                    addHealthAlert('Akıllı saat bağlantısı kesildi', 'info');
+                }
+            }
+            
+            function updateWatchStatus() {
+                const watchName = document.getElementById('watch-name');
+                const watchStatus = document.getElementById('watch-status');
+                const watchBattery = document.getElementById('watch-battery');
+                const scanBtn = document.getElementById('scan-watches');
+                const connectBtn = document.getElementById('connect-watch');
+                const disconnectBtn = document.getElementById('disconnect-watch');
+                const syncBtn = document.getElementById('sync-watch');
+                
+                if (connectedWatch) {
+                    watchName.textContent = connectedWatch.name;
+                    watchStatus.textContent = 'Bağlı';
+                    watchStatus.className = 'status-connected';
+                    watchBattery.textContent = `Pil: ${connectedWatch.battery}%`;
+                    
+                    scanBtn.style.display = 'none';
+                    connectBtn.style.display = 'none';
+                    disconnectBtn.style.display = 'inline-block';
+                    syncBtn.style.display = 'inline-block';
+                } else {
+                    watchName.textContent = 'Bağlı Saat Yok';
+                    watchStatus.textContent = 'Bağlantı Yok';
+                    watchStatus.className = 'status-disconnected';
+                    watchBattery.textContent = 'Pil: --%';
+                    
+                    scanBtn.style.display = 'inline-block';
+                    connectBtn.style.display = 'none';
+                    disconnectBtn.style.display = 'none';
+                    syncBtn.style.display = 'none';
+                }
+            }
+            
+            function startWatchSync() {
+                if (syncInterval) {
+                    clearInterval(syncInterval);
+                }
+                
+                // Her 5 dakikada bir senkronize et
+                syncInterval = setInterval(() => {
+                    if (connectedWatch) {
+                        syncWatchData();
+                    }
+                }, watchSettings.heartRateInterval * 60 * 1000);
+                
+                // İlk senkronizasyonu hemen yap
+                syncWatchData();
+            }
+            
+            function stopWatchSync() {
+                if (syncInterval) {
+                    clearInterval(syncInterval);
+                    syncInterval = null;
+                }
+            }
+            
+            function syncWatch() {
+                if (connectedWatch) {
+                    syncWatchData();
+                }
+            }
+            
+            function syncWatchData() {
+                if (!connectedWatch) return;
+                
+                addHealthAlert('Saat verileri senkronize ediliyor...', 'info');
+                
+                // Simüle edilmiş veri senkronizasyonu
+                setTimeout(() => {
+                    const now = new Date();
+                    lastSyncTime = now;
+                    
+                    // Simüle edilmiş veriler
+                    const heartRate = Math.floor(Math.random() * 40) + 60;
+                    const steps = Math.floor(Math.random() * 1000) + 5000;
+                    const calories = Math.floor(Math.random() * 200) + 300;
+                    const sleepHours = Math.floor(Math.random() * 3) + 7;
+                    
+                    // Verileri güncelle
+                    updateWatchData(heartRate, steps, calories, sleepHours);
+                    
+                    // Sunucuya gönder
+                    socket.emit('watch-sync', {
+                        userId: userData.id,
+                        watchId: connectedWatch.id,
+                        data: {
+                            heartRate: heartRate,
+                            stepCount: steps,
+                            calories: calories,
+                            sleepHours: sleepHours,
+                            battery: connectedWatch.battery,
+                            timestamp: now
+                        }
+                    });
+                    
+                    addHealthAlert('Saat verileri başarıyla senkronize edildi', 'info');
+                }, 2000);
+            }
+            
+            function updateWatchData(heartRate, steps, calories, sleepHours) {
+                const now = new Date();
+                
+                document.getElementById('last-heart-rate').textContent = heartRate + ' BPM';
+                document.getElementById('last-heart-rate-time').textContent = now.toLocaleTimeString('tr-TR');
+                
+                document.getElementById('today-steps').textContent = steps.toLocaleString();
+                document.getElementById('today-steps-time').textContent = now.toLocaleTimeString('tr-TR');
+                
+                document.getElementById('today-calories').textContent = calories + ' kcal';
+                document.getElementById('today-calories-time').textContent = now.toLocaleTimeString('tr-TR');
+                
+                document.getElementById('last-sleep').textContent = sleepHours + ' saat';
+                document.getElementById('last-sleep-time').textContent = now.toLocaleTimeString('tr-TR');
+                
+                document.getElementById('last-sync').textContent = now.toLocaleString('tr-TR');
+                document.getElementById('sync-frequency').textContent = watchSettings.heartRateInterval + ' dakika';
+                
+                // Bağlantı gücünü güncelle
+                const connectionStrength = document.getElementById('connection-strength');
+                const strengthClass = `connection-strength-${connectedWatch.signal}`;
+                connectionStrength.textContent = connectedWatch.signal;
+                connectionStrength.className = strengthClass;
+            }
+            
+            function saveWatchSettings() {
+                watchSettings = {
+                    heartRateInterval: parseInt(document.getElementById('heart-rate-interval').value),
+                    stepGoal: parseInt(document.getElementById('step-goal').value),
+                    sleepTracking: document.getElementById('sleep-tracking').value,
+                    notifications: document.getElementById('notifications').value
+                };
+                
+                // Ayarları localStorage'a kaydet
+                localStorage.setItem('watchSettings', JSON.stringify(watchSettings));
+                
+                // Senkronizasyon aralığını güncelle
+                if (connectedWatch && syncInterval) {
+                    startWatchSync();
+                }
+                
+                addHealthAlert('Saat ayarları kaydedildi', 'info');
+            }
+            
+            // Sayfa yüklendiğinde ayarları yükle
+            const savedSettings = localStorage.getItem('watchSettings');
+            if (savedSettings) {
+                watchSettings = JSON.parse(savedSettings);
+                document.getElementById('heart-rate-interval').value = watchSettings.heartRateInterval;
+                document.getElementById('step-goal').value = watchSettings.stepGoal;
+                document.getElementById('sleep-tracking').value = watchSettings.sleepTracking;
+                document.getElementById('notifications').value = watchSettings.notifications;
+            }
+            
+            // Sayfa yüklendiğinde sunucuya bağlan
+            socket.emit('user-connected', userData);
+        });
+        
+        // Konum detaylarını göster
+        function showLocationDetails(userId, location) {
+            if (!location) {
+                alert('Bu kullanıcının konum bilgisi yok.');
+                return;
+            }
+            
+            const details = `
+                <strong>Detaylı Konum Bilgileri</strong><br><br>
+                <strong>Koordinatlar:</strong><br>
+                Enlem: ${location.lat.toFixed(8)}°<br>
+                Boylam: ${location.lng.toFixed(8)}°<br><br>
+                
+                ${location.altitude ? `<strong>Yükseklik:</strong> ${location.altitude.toFixed(2)} metre<br><br>` : ''}
+                
+                <strong>Hassasiyet:</strong><br>
+                Konum Hassasiyeti: ±${location.accuracy.toFixed(1)} metre<br>
+                ${location.altitudeAccuracy ? `Yükseklik Hassasiyeti: ±${location.altitudeAccuracy.toFixed(1)} metre<br>` : ''}<br>
+                
+                ${location.heading ? `<strong>Yön:</strong> ${location.heading.toFixed(1)}°<br><br>` : ''}
+                ${location.speed ? `<strong>Hız:</strong> ${(location.speed * 3.6).toFixed(1)} km/h<br><br>` : ''}
+                
+                <strong>Zaman:</strong><br>
+                ${new Date(location.timestamp).toLocaleString('tr-TR')}
+            `;
+            
+            // Modal pencere oluştur
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0,0,0,0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            `;
+            
+            const modalContent = document.createElement('div');
+            modalContent.style.cssText = `
+                background: white;
+                padding: 20px;
+                border-radius: 8px;
+                max-width: 400px;
+                max-height: 80vh;
+                overflow-y: auto;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            `;
+            
+            modalContent.innerHTML = `
+                <div style="text-align: right; margin-bottom: 10px;">
+                    <button onclick="this.closest('.modal').remove()" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">✕</button>
+                </div>
+                ${details}
+            `;
+            
+            modal.className = 'modal';
+            modal.appendChild(modalContent);
+            document.body.appendChild(modal);
+            
+            // Modal dışına tıklandığında kapat
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

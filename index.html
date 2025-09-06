@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buradayım</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Buradayım</h1>
+            <p>Konumunuzu paylaşın ve diğerlerinin nerede olduğunu görün</p>
+            <a href="user-panel.html" style="color: white; text-decoration: underline;">Kullanıcı Paneli</a>
+        </header>
+
+        <div class="main-content">
+            <div class="location-section">
+                <button id="share-location-btn">Konumumu Paylaş</button>
+                <div id="location-status"></div>
+                <button id="show-location-details" style="display: none; background-color: #9b59b6; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; margin-top: 10px; width: 100%;">Konum Detaylarını Göster</button>
+            </div>
+
+            <div class="map-section">
+                <div id="map"></div>
+            </div>
+
+            <div class="users-section">
+                <h2>Çevrenizdeki İnsanlar</h2>
+                <ul id="users-list"></ul>
+                
+                <div class="health-summary" style="margin-top: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 8px;">
+                    <h3>Sağlık Durumunuz</h3>
+                    <div class="health-quick-stats">
+                        <div class="quick-stat">
+                            <span class="stat-icon">❤️</span>
+                            <span class="stat-text">Kalp: <span id="quick-heart-rate">-- BPM</span></span>
+                        </div>
+                        <div class="quick-stat">
+                            <span class="stat-icon">🚶</span>
+                            <span class="stat-text">Adım: <span id="quick-step-count">--</span></span>
+                        </div>
+                        <div class="quick-stat">
+                            <span class="stat-icon">🔥</span>
+                            <span class="stat-text">Kalori: <span id="quick-calories">--</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Buradayım Projesi © 2023</p>
+        </footer>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
